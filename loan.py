@@ -23,3 +23,17 @@ class Loan:
 
             self.active = False
 
+    def Create_Post(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'type': self.type,
+            'it': self.it,
+            'ir': self.ir,
+            'p_amount': self.p_amount,
+            'amount_payed': self.amount_payed,
+            'min_payment': self.min_payment,
+            'term_length': self.term_length,
+            'active': self.active
+        }
+

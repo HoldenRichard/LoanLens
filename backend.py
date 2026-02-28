@@ -51,7 +51,6 @@ def get_current_user(request: Request):
         raise HTTPException(status_code=401, detail="Not authenticated")
     return user
 
-<<<<<<< HEAD
 # Holden's function for creating matplotlib bar graph
 # used https://matplotlib.org as a resource
 def generate_loan_chart(loans):
@@ -77,9 +76,6 @@ def generate_loan_chart(loans):
     buf.seek(0)
     return base64.b64encode(buf.read()).decode('utf-8')
 
-=======
-# ----- Login routes ------
->>>>>>> 14bdb1011335dafcd2ef51bf50a6fa693a1f06fd
 @app.get("/login")
 async def login(request: Request):
     url = await oauth.login()
@@ -185,6 +181,20 @@ async def loan_create(
     kinde_id = current_user.get("id")
     db.create_loan(kinde_id, loan_name, min_payment, loan_type, late_fee, p_amount, ir, it, term_length, amount_payed)
     return RedirectResponse(url="/", status_code=302)
+
+@app.post("/loan_contribute")
+async def loan_contribute(
+    request: Request,
+    loan_id: int = Form(...),
+    payment_amount: float = Form(...)
+):
+    current_user = request.session.get("kinde_user")
+    if not current_user:
+        return RedirectResponse(url="/login", status_code=302)
+
+    db.contribute_to_loan(loan_id, payment_amount)
+    return RedirectResponse(url="/", status_code=302)
+
 # ------ home page ------
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
