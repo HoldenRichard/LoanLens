@@ -157,13 +157,13 @@ def add_goal(user_id, completed, description, duration):
     connection.close()
 
 #deletes a goal
-def delete_goal(description):
+def delete_goal(goal_id):
     connection = sql.connect("database/fintech.db")
     cursor = connection.cursor()
 
     cursor.execute(
-        '''DELETE FROM goal WHERE description = ?''',
-        (description,)
+        '''DELETE FROM goal WHERE goal_id = ?''',
+        (goal_id,)
     )
 
     connection.commit()
