@@ -35,7 +35,7 @@ def insert_user(name,email, career_id):
     #need to check if email exists through db
      #if not, create new user
     cursor.execute(
-        '''SELECT user_id FROM users WHERE email = ?''',
+        '''SELECT user_id FROM user WHERE email = ?''',
         (email,)
     )
 
