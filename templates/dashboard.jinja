@@ -72,9 +72,14 @@
         {% if goals %}
         {% for goal in goals%}
           <div>
-            <input type="checkbox" id={{ goal['id'] }} name="checklist">
-            <label for={{ goal['id'] }}>{{ goal['description'] }}</label>
+            <input type="checkbox" id="{{ goal['id'] }}" name="checklist">
+            <label for="{{ goal['id'] }}">{{ goal['description'] }}</label>
+            
           <div>
+          <form action="/delete_goal" method="POST" style="margin: 0;">
+            <input type="hidden" name="goal_id" value="{{ goal['id'] }}">
+            <button type="submit" class="outline secondary" style="padding: 2px 10px; font-size: 0.8rem;">Delete</button>
+          </form>
         {% endfor %}
         {% endif %}
         <!--

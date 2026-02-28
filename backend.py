@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 from kinde_sdk.auth.oauth import OAuth
 from kinde_sdk.core.helpers import generate_random_string
 import checklist as checklist_module
+from typing import Optional
 
 BASE_DIR = Path(__file__).parent
 ENV_PATH = BASE_DIR / ".env"
@@ -97,7 +98,7 @@ async def goal_create(
     request: Request, 
     goal: str = Form(...),
     duration: int = Form(...),
-    status: str = Form(...)
+    status: Optional[str] = Form(None)
     ): 
     current_user = request.session.get("kinde_user")
     kinde_id = current_user.get("id")
@@ -108,7 +109,6 @@ async def goal_create(
     db.add_goal(kinde_id, status_flag, goal, duration)
     return RedirectResponse(url="/", status_code=302)
     
-    pass
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     current_user = request.session.get("kinde_user")
