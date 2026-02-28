@@ -109,6 +109,14 @@ async def goal_create(
     db.add_goal(kinde_id, status_flag, goal, duration)
     return RedirectResponse(url="/", status_code=302)
 
+@app.post("/delete_goal")
+async def delete_goal(
+    request: Request,
+    goal_id: str = Form(...)
+):
+    db.delete_goal(goal_id)
+    return RedirectResponse(url="/", status_code=302)
+
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     current_user = request.session.get("kinde_user")
