@@ -1,6 +1,13 @@
 {% extends 'base.jinja' %}
 
 {% block body %}
+  <div>
+    {% if user %}
+      Logged in as {{ user.email }} | <a href="/logout">Logout</a>
+    {% else %}
+      <a href="/login">Login</a> | <a href="/register">Register</a>
+    {% endif %}
+  </div>
   <header>
     <h1>{{user.given_name}}'s Financial Dashboard</h1>
     <p>Overview of your loan portfolio</p>
