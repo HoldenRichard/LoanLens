@@ -235,7 +235,7 @@ async def home(request: Request):
             "user": current_user, 
             "goals": goals,
             "loan_summary": loan_summary,
-            "loan": loans
+            "loans": loans
         }
     )
 
