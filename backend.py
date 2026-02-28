@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 from kinde_sdk.auth.oauth import OAuth
 from kinde_sdk.core.helpers import generate_random_string
 import checklist as checklist_module
+import loan_list as loan_list_module
 from typing import Optional
 
 BASE_DIR = Path(__file__).parent
@@ -107,7 +108,15 @@ async def goal_create(
         status_flag = 0
     db.add_goal(kinde_id, status_flag, goal, duration)
     return RedirectResponse(url="/", status_code=302)
-    
+
+@app.post("/delete_goal")
+async def delete_goal(
+    request: Request,
+    goal_id: str = Form(...)
+):
+    db.delete_goal(goal_id)
+    return RedirectResponse(url="/", status_code=302)
+
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     current_user = request.session.get("kinde_user")
@@ -130,12 +139,17 @@ async def home(request: Request):
     checklist = checklist_module.Checklist(current_user)
     goals = checklist.Create_Post()
 
+    # get loans and loan summary data
+    loans = loan_list_module.LoanList(current_user)
+    loan_summary = loans.Create_Post()
+
     return templates.TemplateResponse(
         "dashboard.jinja",
         {
             "request": request, 
             "user": current_user, 
-            "goals": goals
+            "goals": goals,
+            "loan_summary": loan_summary
         }
     )
 
