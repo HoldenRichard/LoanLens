@@ -17,4 +17,4 @@ class Loan:
 
     def Create_Post(self):
 
-        pass
+        return {}
