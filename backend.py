@@ -210,8 +210,9 @@ async def home(request: Request):
     goals = checklist.Create_Post()
 
     # get loans and loan summary data
-    loans = loan_list_module.LoanList(current_user.get("id"))
-    loan_summary = loans.Create_Post()
+    loan_listing = loan_list_module.LoanList(current_user.get("id"))
+    loan_summary = loan_listing.Create_Summary_Post()
+    loans = loan_listing.Create_Loan_Post()
 
     return templates.TemplateResponse(
         "dashboard.jinja",
@@ -219,7 +220,8 @@ async def home(request: Request):
             "request": request, 
             "user": current_user, 
             "goals": goals,
-            "loan_summary": loan_summary
+            "loan_summary": loan_summary,
+            "loan": loans
         }
     )
 
