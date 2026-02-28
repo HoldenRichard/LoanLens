@@ -55,7 +55,7 @@ async def dashboard(
     # Access the user's unique ID from the Kinde token
     kinde_id = current_user.get("id")
 
-    checklist = shecklist.Checklist(current_user)
+    checklist = checklist.Checklist(current_user)
 
     goals = checklist.Create_Post()
 
