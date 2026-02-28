@@ -1,4 +1,5 @@
 # This is the Checklist class for the checklist on the users dashboard
+import goal
 import sys
 import os
 # import database files
@@ -10,11 +11,27 @@ class Checklist:
     # checklist class constructor
     def __init__(self):
 
-        self.task = []
+        self.goal = []
 
-        self.Get_Tasks_From_DB()
+        self.Get_Goals_From_DB()
 
 
-    def Get_Tasks_From_DB(self):
+    def Get_Goals_From_DB(self):
 
-        tasks_db = db
+        # get user goals fro database
+        goals_db = db.get_goals()
+
+        # cycle through all goals and create tasks
+        for goal_db in goals_db:
+
+            # get goal values
+            goal_ID = goal_db[0]
+            description = goal_db[3]
+            completion_status = goal_db[2]
+            duration = goal_db[4]
+
+            # create goal object
+            goal = Goal(goal_ID, description, completion_status, duration)
+
+            # adds goal to goals list
+            self.goals.append(goal)
