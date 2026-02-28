@@ -68,7 +68,7 @@ async def callback(request: Request, code: str, state: str | None = None):
     # Sync Kinde user into your DB
     name = f"{user.get('given_name', '')} {user.get('family_name', '')}".strip()
     email = user.get("email", "")
-    db_user_id = db.get_or_create_user(name, email)  # won't duplicate if they've logged in before
+    db_user_id = db.insert_user(name, email, None)  # won't duplicate if they've logged in before
     user["db_user_id"] = db_user_id
 
     request.session["kinde_user"] = user
@@ -109,6 +109,23 @@ async def goal_create(
     db.add_goal(kinde_id, status_flag, goal, duration)
     return RedirectResponse(url="/", status_code=302)
 
+@app.post("/goal_status")
+async def toggle_goal_status(
+    request: Request, 
+    goal_id: int = Form(...),
+    current_status: int = Form(...)
+):
+    current_user = request.session.get("kinde_user")
+    if not current_user:
+        return RedirectResponse(url="/login", status_code=302)
+
+    # Flip the status: 0 becomes 1, anything else (like 1) becomes 0
+    new_status = 1 if current_status == 0 else 0
+    
+    db.update_goal_status(goal_id, new_status, current_user.get("id"))
+    
+    return RedirectResponse(url="/", status_code=302)
+
 @app.post("/delete_goal")
 async def delete_goal(
     request: Request,
@@ -140,7 +157,7 @@ async def home(request: Request):
     goals = checklist.Create_Post()
 
     # get loans and loan summary data
-    loans = loan_list_module.LoanList(current_user)
+    loans = loan_list_module.LoanList(current_user.get("id"))
     loan_summary = loans.Create_Post()
 
     return templates.TemplateResponse(

@@ -71,11 +71,21 @@
       <div>
         {% if goals %}
         {% for goal in goals%}
-          <div>
-            <input type="checkbox" id="{{ goal['id'] }}" name="checklist">
-            <label for="{{ goal['id'] }}">{{ goal['description'] }}</label>
+          <form action="/goal_status" method="POST" style="margin: 0;">
+            <input type="hidden" name="goal_id" value="{{ goal['id'] }}">
+            <input type="hidden" name="current_status" value="{{ goal['status'] }}">
             
-          <div>
+            <button type="submit" 
+                    class="{% if goal['status'] == 1 %}success{% else %}secondary outline{% endif %}" 
+                    style="padding: 5px 15px; font-size: 0.9rem; min-width: 120px;">
+              {% if goal['status'] == 1 %} Done {% else %} Mark Complete {% endif %}
+            </button>
+          </form>
+
+          <span style="{% if goal['status'] == 1 %}text-decoration: line-through; opacity: 0.6;{% endif %}">
+            {{ goal['description'] }}
+          </span>
+
           <form action="/delete_goal" method="POST" style="margin: 0;">
             <input type="hidden" name="goal_id" value="{{ goal['id'] }}">
             <button type="submit" class="outline secondary" style="padding: 2px 10px; font-size: 0.8rem;">Delete</button>

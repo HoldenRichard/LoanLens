@@ -169,13 +169,13 @@ def delete_goal(goal_id):
     connection.commit()
     connection.close()
 
-def status_goal(status, goal_id):
+def update_goal_status(goal_id, new_status, user_id ):
     connection = sql.connect("database/fintech.db")
     cursor = connection.cursor()
 
     cursor.execute(
-        '''UPDATE goal SET completed = ? WHERE goal_id = ?''',
-        (status, goal_id, )
+        '''UPDATE goal SET completed = ? WHERE goal_id = ? AND user_id = ?''',
+        (new_status, goal_id, user_id,)
     )
 
     connection.commit()
