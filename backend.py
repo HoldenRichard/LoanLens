@@ -247,6 +247,7 @@ async def home(request: Request):
     loan_listing = loan_list_module.LoanList(current_user.get("id"))
     loan_summary = loan_listing.Create_Summary_Post()
     loans = loan_listing.Create_Loan_Post()
+    loan_completion = loan_listing.Create_LoanCompletion_Post()
 
     return templates.TemplateResponse(
         "dashboard.jinja",
@@ -257,7 +258,8 @@ async def home(request: Request):
             "goal_completed": goal_completed,
             "goal_total": goal_total,
             "loan_summary": loan_summary,
-            "loans": loans
+            "loans": loans,
+            "completion": loan_completion,
         }
     )
 
