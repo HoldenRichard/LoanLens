@@ -185,17 +185,32 @@ def test():
     #creating functions to add jobs to a database.
 
     #adds a job to jobs table.
-    def add_job(job_title,description,salary, career_id):
-        connection = sql.connect("database/fintech.db")
-        cursor = connection.cursor()
-        cursor.execute(
-        '''INSERT into Job (job_title, description, salary, career_id) VALUES (?,?,?,?)''',
-        (job_title,description,salary, career_id)
-        )
-        connection.commit()
-        connection.close()
+def add_job(job_title,description,salary, career_id):
+    connection = sql.connect("database/fintech.db")
+    cursor = connection.cursor()
+    cursor.execute(
+    '''INSERT into Job (job_title, description, salary, career_id) VALUES (?,?,?,?)''',
+    (job_title,description,salary, career_id)
+    )
+    connection.commit()
+    connection.close()
 
+#retrieves jobs given the career of the user
+def retrieve_job__listings(user_id):
+    connection = sql.connect("database/fintech.db")
+    cursor = connection.cursor()
+    cursor.execute(
+        '''
+        SELECT j.*
+        FROM Job j
+        JOIN users u ON u.career_id = j.career_id
+        WHERE u.user_id = ?
+        ''',
+        (user_id,)
+    )
 
-
+    jobs = cursor.fetchall()
+    connection.close()
+    return jobs
 
 #test()
