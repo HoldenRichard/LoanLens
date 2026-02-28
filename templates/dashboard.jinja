@@ -162,12 +162,12 @@
     </section>
 
     <section class="monthly_goal">
-      <h2>Monthly Goal Progress</h2>
-      <p>Current progress towards monthly target</p>
+      <h2>Goal Progress</h2>
+      <p>Your progress on checklist goals</p>
       <div>
-        <label for="monthlyGoal">Monthly Goal: $50,000 / $100,000</label>
-        <progress id="monthlyGoal" value="50000" max="100000">50%</progress>
-        <span>50%</span>
+        <label for="monthlyGoal">Goals completed: {{ goal_completed }} / {{ goal_total }}</label>
+        <progress id="monthlyGoal" value="{{ goal_completed }}" max="{{ goal_total if goal_total > 0 else 1 }}">{{ (100 * goal_completed / goal_total)|round|int if goal_total > 0 else 0 }}%</progress>
+        <span>{{ (100 * goal_completed / goal_total)|round|int if goal_total > 0 else 0 }}%</span>
       </div>
     </section>
 
