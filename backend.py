@@ -51,7 +51,6 @@ def get_current_user(request: Request):
         raise HTTPException(status_code=401, detail="Not authenticated")
     return user
 
-<<<<<<< HEAD
 # Holden's function for creating matplotlib bar graph
 # used https://matplotlib.org as a resource
 def generate_loan_chart(loans):
