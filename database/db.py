@@ -117,6 +117,19 @@ def create_loan(user_id, loan_name, min_payment, loan_type, late_fee, p_amount, 
     )
     connection.commit()
     connection.close()
+
+#deletes loan given its name and interest type.
+def delete_loan(loan_name, IT):
+    connection = sql.connect("database/fintech.db")
+    cursor = connection.cursor()
+
+    cursor.execute(
+        '''DELETE FROM loans WHERE loan_name= ? AND IT = ?''',
+        (loan_name, IT)
+    )
+
+    connection.commit()
+    connection.close()
     
 
 #retrieves users goals, returns a list of tuples of each goal information.
