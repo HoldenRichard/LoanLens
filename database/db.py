@@ -106,6 +106,17 @@ def get_loans(user_id):
 
     return loans
 
+#creates a loan and adds it to db.
+def create_loan(user_id, loan_name, min_payment, loan_type, late_fee, p_amount, IR, IT, term_length, amount_payed):
+    connection = sql.connect("database/fintech.db")
+    cursor = connection.cursor()
+
+    cursor.execute(
+        '''INSERT into loans (user_id, loan_name, min_payment, type, late_fee, p_amount, IR, IT, term_length, amount_payed) VALUES (?,?,?,?,?,?,?,?,?,?)''', 
+    (user_id, loan_name, min_payment, loan_type, late_fee, p_amount, IR, IT, term_length, amount_payed)
+    )
+    connection.commit()
+    connection.close()
     
 
 #retrieves users goals, returns a list of tuples of each goal information.
@@ -121,9 +132,12 @@ def retrieve_goals(user_id):
 
     return goals
 
-#
+#creates a 
 def add_goals(user_id, completed, description, duration):
-    pass
+    connection = sql.connect("database/fintech.db")
+    cursor = connection.cursor()
+    '''INSERT into goal '''
+    
 
 def test():
     career_id = insert_career("Computer Science")
