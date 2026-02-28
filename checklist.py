@@ -3,8 +3,8 @@ import goal
 import sys
 import os
 # import database files
-sys.path.append(os.path.join(os.path.dirname(__file__)), 'database')
-import db
+from database import db
+from goal import Goal
 
 class Checklist:
 
@@ -20,7 +20,7 @@ class Checklist:
     def Get_Goals_From_DB(self):
 
         # get user goals fro database
-        goals_db = db.get_goals(user)
+        goals_db = db.get_goals(self.user)
 
         # cycle through all goals and create tasks
         for goal_db in goals_db:
