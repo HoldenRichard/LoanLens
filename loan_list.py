@@ -1,4 +1,6 @@
 # This class represents the users loans
+from fontTools.varLib.mutator import percents
+
 from database import db
 from loan import Loan
 
@@ -85,3 +87,26 @@ class LoanList():
             post.append(loan.Create_Post())
 
         return post
+
+    def Create_LoanCompletion_Post(self):
+
+        loans_amount_complete = 0
+
+        for loan in self.loans:
+
+            if loan.active:
+
+                loans_amount_complete = loans_amount_complete + loan.amount_not_complete
+
+        if self.Calculate_Loan_Total() > 0:
+            loan_total = self.Calculate_Loan_Total()
+            percentage_complete = (loans_amount_complete / loan_total) * 100
+        else:
+            loan_total = 0
+            loans_amount_complete = 0
+            percentage_complete = 0
+
+
+        return {'loan_amount_paid':loans_amount_complete, 'percentage_complete':percentage_complete, 'loan_total':loan_total}
+
+
