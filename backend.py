@@ -12,6 +12,7 @@ from kinde_sdk.auth.oauth import OAuth
 from kinde_sdk.core.helpers import generate_random_string
 import checklist as checklist_module
 import loan_list as loan_list_module
+from typing import Optional
 
 BASE_DIR = Path(__file__).parent
 ENV_PATH = BASE_DIR / ".env"
@@ -67,9 +68,8 @@ async def callback(request: Request, code: str, state: str | None = None):
     # Sync Kinde user into your DB
     name = f"{user.get('given_name', '')} {user.get('family_name', '')}".strip()
     email = user.get("email", "")
-    kinde_id = user.get("id", "")
-    db_user_id = db.insert_user(name, email, None)
-    user["db_user_id"] = db_user_id  # stash so rest of app can use it
+    db_user_id = db.get_or_create_user(name, email)  # won't duplicate if they've logged in before
+    user["db_user_id"] = db_user_id
 
     request.session["kinde_user"] = user
     return RedirectResponse(url="/", status_code=302)
@@ -98,7 +98,7 @@ async def goal_create(
     request: Request, 
     goal: str = Form(...),
     duration: int = Form(...),
-    status: str = Form(...)
+    status: Optional[str] = Form(None)
     ): 
     current_user = request.session.get("kinde_user")
     kinde_id = current_user.get("id")
@@ -108,8 +108,7 @@ async def goal_create(
         status_flag = 0
     db.add_goal(kinde_id, status_flag, goal, duration)
     return RedirectResponse(url="/", status_code=302)
-    
-    pass
+
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     current_user = request.session.get("kinde_user")
