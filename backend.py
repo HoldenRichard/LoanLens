@@ -21,24 +21,39 @@ app.add_middleware(
 )
 app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
 templates = Jinja2Templates(directory=BASE_DIR / "templates")
-
+'''
+async def get_current_user(token: str = Depends(oauth2_scheme)):
+    # get current user
+    try:
+        # 2. Use the Kinde SDK/helper to decode and verify
+        user_info = kinde_client.get_user_details(token) 
+        
+        if not user_info:
+            raise HTTPException(status_code=401, detail="Invalid Session")
+            
+        return user_info # This now "injects" the user into your routes
+        
+    except Exception:
+        raise HTTPException(status_code=401, detail="Could not validate credentials")
+'''
+# WEB APP ROUTES
 @app.get("/", response_class=HTMLResponse)
 async def login(request: Request):
     return templates.TemplateResponse(
         "login.jinja",
         {"request": request,}
     )
-
+'''
 @app.get("/dashboard", response_class=HTMLResponse)
 async def dashboard(
     request: Request,
     # The 'get_current_user' function extracts the Kinde ID from the token
     current_user: Annotated[dict, Depends(get_current_user)]
 ):
-    # 1. Access the user's unique ID from the Kinde token
+    # Access the user's unique ID from the Kinde token
     kinde_id = current_user.get("id")
 
-    # 2. Query your DB using ONLY this ID
+    # Query your DB using ONLY this ID
     # example: user_data = db.query(User).filter(User.kinde_id == kinde_id).first()
     
     return templates.TemplateResponse(
@@ -48,6 +63,6 @@ async def dashboard(
             "user": current_user  # Pass the Kinde info to the frontend
         }
     )
-
+'''
 if __name__ == '__main__':
     uvicorn.run(app, host="127.0.0.1", port=8000)
