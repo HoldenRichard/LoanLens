@@ -15,16 +15,16 @@
 
   <main>
     <section class="loan_distribution">
-      <h2>Loan Payoff Progress</h2>
-      <p>Principal vs minimum payment per loan</p>
-      <div>
-        {% if chart %}
-          <img src="data:image/png;base64,{{ chart }}" alt="Loan chart" style="width: 100%; max-width: 700px;">
-        {% else %}
-          <p>No loan data to display chart.</p>
-        {% endif %}
-      </div>
-    </section>
+    <h2>Loan Payoff Progress</h2>
+    <p>Principal vs minimum payment per loan</p>
+    <div>
+      {% if chart %}
+        <img src="data:image/png;base64,{{ chart }}" alt="Loan chart" style="width: 100%; max-width: 700px;">
+      {% else %}
+        <p>No loan data to display chart.</p>
+      {% endif %}
+    </div>
+  </section>
 
     <section class="loan_summary">
       <h2>Loan Summary</h2>
