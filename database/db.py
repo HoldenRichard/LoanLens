@@ -71,6 +71,22 @@ def get_user(user_id):
 
     return user
 
+#returns a list of tuples where each tuple represents loan info
+#loan tuple = (loan_id, user_id, loan_name, min_payment, type, late_fee, p_amount, IR, IT, term_length)
+def get_loans(user_id):
+    connection = sql.connect("database/fintech.db")
+    cursor = connection.cursor()
+    cursor.execute(
+        '''SELECT *
+    FROM loans
+    WHERE user_id = ?
+    ''',(user_id,)
+    )
+    loans = cursor.fetchall()
+    connection.close()
+
+    return loans
+
     
 
 #retrieves users goals, returns a list of tuples of each goal information.
