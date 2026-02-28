@@ -35,7 +35,27 @@ def insert_user(name,email, h_pass, career_id):
     connection.commit()
     connection.close()
 
+#searches database if user is there returns true if so
+def login_user(email, h_pass):
+    connection = sql.connect("database/fintech.db")
+    cursor = connection.cursor()
+
+    cursor.execute(
+        "SELECT 1 FROM users WHERE email = ? AND h_pass = ?",
+        (email, h_pass)
+    )
+
+    result = cursor.fetchone()
+    connection.close()
+
+    return result is not None
+
+
 # Mason functions
+    
+    #retrieves users goals
+    #need a function to add goals
+    #need a function to delete goals
 
 # gets list of user task
 def get_goals():
