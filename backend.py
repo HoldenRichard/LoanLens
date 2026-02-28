@@ -45,7 +45,7 @@ oauth = OAuth(
     redirect_uri=os.getenv("KINDE_REDIRECT_URI"),
 )
 
-def current_user(request: Request):
+def get_current_user(request: Request):
     return request.session.get("kinde_user")
 
 @app.get("/login")
@@ -74,7 +74,7 @@ async def callback(request: Request, code: str, state: str | None = None):
 
 @app.get("/logout")
 async def logout(request: Request):
-    user = current_user(request)
+    user = get_current_user(request)
     user_id = user.get("_kinde_user_id") if user else None
     request.session.clear()
     logout_url = await oauth.logout(user_id=user_id)
@@ -85,7 +85,7 @@ async def home(request: Request):
     if "state" in request.query_params:
         return RedirectResponse(url="/", status_code=302)
 
-    user = current_user(request)
+    user = get_current_user(request)
     if not user:
         return RedirectResponse(url="/login", status_code=302)
 
