@@ -9,6 +9,7 @@ import uvicorn
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+import checklist
 
 load_dotenv()
 
@@ -43,15 +44,19 @@ async def login(request: Request):
         "login.jinja",
         {"request": request,}
     )
-'''
+
 @app.get("/dashboard", response_class=HTMLResponse)
 async def dashboard(
     request: Request,
     # The 'get_current_user' function extracts the Kinde ID from the token
-    current_user: Annotated[dict, Depends(get_current_user)]
+    current_user: Annotated[dict, Depends(get_current_user)],
 ):
     # Access the user's unique ID from the Kinde token
     kinde_id = current_user.get("id")
+
+    checklist = shecklist.Checklist(current_user)
+
+    goals = checklist.Create_Post()
 
     # Query your DB using ONLY this ID
     # example: user_data = db.query(User).filter(User.kinde_id == kinde_id).first()
@@ -60,9 +65,10 @@ async def dashboard(
         "dashboard.jinja", 
         {
             "request": request, 
-            "user": current_user  # Pass the Kinde info to the frontend
+            "user": current_user,  # Pass the Kinde info to the frontend
+            "goals": goals
         }
     )
-'''
+
 if __name__ == '__main__':
     uvicorn.run(app, host="127.0.0.1", port=8000)
