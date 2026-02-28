@@ -181,6 +181,20 @@ async def loan_create(
     kinde_id = current_user.get("id")
     db.create_loan(kinde_id, loan_name, min_payment, loan_type, late_fee, p_amount, ir, it, term_length, amount_payed)
     return RedirectResponse(url="/", status_code=302)
+
+@app.post("/loan_contribute")
+async def loan_contribute(
+    request: Request,
+    loan_id: int = Form(...),
+    payment_amount: float = Form(...)
+):
+    current_user = request.session.get("kinde_user")
+    if not current_user:
+        return RedirectResponse(url="/login", status_code=302)
+
+    db.contribute_to_loan(loan_id, payment_amount)
+    return RedirectResponse(url="/", status_code=302)
+
 # ------ home page ------
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
