@@ -41,11 +41,8 @@ oauth = OAuth(
 def get_current_user(request: Request):
     user = request.session.get("kinde_user")
     if not user:
-<<<<<<< HEAD
         raise HTTPException(status_code=401, detail="Not authenticated")
-=======
-        return None
->>>>>>> 4886967c5b73088b606fe25395739c44969699c1
+        return
     return user
 
 @app.get("/login")
@@ -114,20 +111,6 @@ async def home(request: Request):
 
     if "state" in request.query_params:
         return RedirectResponse(url="/", status_code=302)
-<<<<<<< HEAD
-    user = request.session.get("kinde_user")
-    if not user:
-        return RedirectResponse(url="/login", status_code=302)
-    return RedirectResponse(url="/dashboard", status_code=302)
-
-@app.get("/dashboard", response_class=HTMLResponse)
-async def dashboard(
-    request: Request,
-    user: dict = Depends(get_current_user)
-):
-    cl = checklist_module.Checklist(user)
-    goals = cl.Create_Post()
-=======
 
     # Secure Gatekeeper
     if not current_user:
@@ -141,20 +124,14 @@ async def dashboard(
         return RedirectResponse(url="/login")
     
     # Initialize your checklist with the authenticated user
-    checklist = Checklist(kinde_id)
+    checklist = checklist_module.Checklist(current_user)
     goals = checklist.Create_Post()
->>>>>>> 4886967c5b73088b606fe25395739c44969699c1
 
     return templates.TemplateResponse(
         "dashboard.jinja",
         {
-<<<<<<< HEAD
-            "request": request,
-            "user": user,
-=======
             "request": request, 
             "user": current_user, 
->>>>>>> 4886967c5b73088b606fe25395739c44969699c1
             "goals": goals
         }
     )
