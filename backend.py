@@ -154,11 +154,15 @@ async def toggle_goal_status(
     if not current_user:
         return RedirectResponse(url="/login", status_code=302)
 
+    db_user_id = current_user.get("db_user_id")
+    if db_user_id is None and current_user.get("email"):
+        db_user_id = db.get_user_id_by_email(current_user["email"])
+        current_user["db_user_id"] = db_user_id
+        request.session["kinde_user"] = current_user
+
     # Flip the status: 0 becomes 1, anything else (like 1) becomes 0
     new_status = 1 if current_status == 0 else 0
-    
-    db.update_goal_status(goal_id, new_status, current_user.get("id"))
-    
+    db.update_goal_status(goal_id, new_status, db_user_id)
     return RedirectResponse(url="/", status_code=302)
 
 @app.post("/delete_goal")
@@ -236,6 +240,8 @@ async def home(request: Request):
     # Initialize your checklist with the authenticated user
     checklist = checklist_module.Checklist(current_user)
     goals = checklist.Create_Post()
+    goal_completed = sum(1 for g in goals if g.get("status") == 1)
+    goal_total = len(goals)
 
     # get loans and loan summary data
     loan_listing = loan_list_module.LoanList(current_user.get("id"))
@@ -248,6 +254,8 @@ async def home(request: Request):
             "request": request, 
             "user": current_user, 
             "goals": goals,
+            "goal_completed": goal_completed,
+            "goal_total": goal_total,
             "loan_summary": loan_summary,
             "loans": loans
         }
