@@ -37,5 +37,7 @@ def insert_user(name,email, h_pass, career_id):
 
 # Mason functions
 
-
+# gets list of user task
+def get_goals():
+    pass
 # End of masons functions
