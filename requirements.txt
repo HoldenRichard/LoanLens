@@ -3,3 +3,5 @@ fastapi
 fastapi[standard]
 matplotlib
 python-multipart
+jinja2
+uvicorn
