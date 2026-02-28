@@ -20,7 +20,7 @@ class Checklist:
     def Get_Goals_From_DB(self):
 
         # get user goals fro database
-        goals_db = db.get_goals(self.user)
+        goals_db = db.retrieve_goals(self.user)
 
         # cycle through all goals and create tasks
         for goal_db in goals_db:
