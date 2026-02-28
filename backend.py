@@ -67,7 +67,7 @@ async def callback(request: Request, code: str, state: str | None = None):
     name = f"{user.get('given_name', '')} {user.get('family_name', '')}".strip()
     email = user.get("email", "")
     kinde_id = user.get("id", "")
-    db_user_id = db.get_or_create_user(kinde_id, name, email)
+    db_user_id = db.insert_user(name, email, None)
     user["db_user_id"] = db_user_id  # stash so rest of app can use it
 
     request.session["kinde_user"] = user
@@ -103,6 +103,7 @@ async def goal_create(
         complete_flag = 1
     else:
         complete_flag = 0
+    #db.add_goal()
     
     pass
 @app.get("/", response_class=HTMLResponse)
