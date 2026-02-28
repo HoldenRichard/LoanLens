@@ -35,7 +35,7 @@ def insert_user(name,email, career_id):
     #need to check if email exists through db
      #if not, create new user
     cursor.execute(
-        '''SELECT user_id FROM users WHERE email = ?''',
+        '''SELECT user_id FROM user WHERE email = ?''',
         (email,)
     )
 
@@ -105,6 +105,10 @@ def get_loans(user_id):
     connection.close()
 
     return loans
+
+def create_loans(user_id, loan_name, min_payment, type, late_fee, p_amount, IR, IT, term_length):
+    connection = sql.connect("database/fintech.db")
+    cursor = connection.cursor()
 
     
 
