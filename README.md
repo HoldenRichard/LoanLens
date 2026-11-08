@@ -2,9 +2,9 @@
 
 LoanLens is a fintech dashboard designed to help **college students and recent graduates track, manage, and understand their student loans**.
 
-Built during **UVM Hacks 2026 (Second Annual UVM Hackathon)**.
+Built during the [2026 UVM Hackathon](https://www.uvm.edu/cems/cs/news/hack-future).
 
-**2nd Place Overall**
+**1st in Fintech and 2nd overall**
 
 LoanLens gives users a simple dashboard to visualize loan balances, track repayment progress, and set financial goals.
 
@@ -138,9 +138,7 @@ http://localhost:8000
 
 ## Hackathon Context
 
-LoanLens was built for the **fintech challenge prompt** at UVM Hacks 2026, focused on helping students improve financial literacy and make smarter financial decisions.
-
-The project placed **2nd overall** among all teams.
+LoanLens was built for the **fintech challenge prompt** at the 2026 UVM Hackathon, focused on helping students improve financial literacy and make smarter financial decisions.
 
 ---
 
